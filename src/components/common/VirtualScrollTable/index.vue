@@ -66,7 +66,7 @@
                     class="tr"
                     :class="{
                         'tr--selected': isRowSelected(row),
-                        'tr--active': $help.lodash.isEqual(activeRow, row),
+                        'tr--active': $helper.lodash.isEqual(activeRow, row),
                     }"
                     :style="{ lineHeight }"
                     @contextmenu.prevent="e => $emit('on-row-right-click', { e, row })"
@@ -105,7 +105,7 @@
                             :class="{ 'cursor--grab no-userSelect': h.draggable }"
                             :style="{
                                 height: lineHeight,
-                                minWidth: $help.handleAddPxUnit(headerWidthMap[i]),
+                                minWidth: $helper.handleAddPxUnit(headerWidthMap[i]),
                             }"
                             v-on="
                                 h.draggable
@@ -164,7 +164,7 @@ import TableHeader from './TableHeader'
 import VerticalRow from './VerticalRow.vue'
 import RowGroup from './RowGroup.vue'
 import RowGroupCheckbox from './RowGroupCheckbox.vue'
-import customDragEvt from 'mixins/customDragEvt'
+import customDragEvt from '@/mixins/customDragEvt'
 export default {
     name: 'virtual-scroll-table',
     components: {
@@ -270,7 +270,7 @@ export default {
             deep: true,
             handler(v, oV) {
                 // Clear selectedItems once rows value changes
-                if (!this.$help.lodash.isEqual(v, oV)) this.selectedItems = []
+                if (!this.$helper.lodash.isEqual(v, oV)) this.selectedItems = []
             },
         },
         isVertTable(v) {
@@ -309,7 +309,7 @@ export default {
         },
 
         cellMaxWidth(i) {
-            return this.$typy(this.headerWidthMap[i]).safeNumber - 24
+            return this.$typeCheck(this.headerWidthMap[i]).safeNumber - 24
         },
 
         /**
@@ -384,7 +384,7 @@ export default {
          * @returns {Boolean} - return whether this is a group row or not
          */
         isRowGroup(row) {
-            return this.$typy(row).isObject
+            return this.$typeCheck(row).isObject
         },
 
         /**
@@ -393,7 +393,7 @@ export default {
          */
         isRowGroupCollapsed(row) {
             const targetIdx = this.collapsedRowGroups.findIndex(r =>
-                this.$help.lodash.isEqual(row, r)
+                this.$helper.lodash.isEqual(row, r)
             )
             return targetIdx === -1 ? false : true
         },
@@ -424,7 +424,7 @@ export default {
          * @returns {Number} - returns index of row array in selectedItems
          */
         getSelectedRowIdx(row) {
-            return this.selectedItems.findIndex(ele => this.$help.lodash.isEqual(ele, row))
+            return this.selectedItems.findIndex(ele => this.$helper.lodash.isEqual(ele, row))
         },
 
         /**

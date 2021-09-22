@@ -81,8 +81,8 @@ export default {
         selectedItems: {
             deep: true,
             handler(v) {
-                if (this.$typy(v).isNull) this.$emit('selected-items', [])
-                else if (this.$typy(v).isArray) this.$emit('selected-items', v)
+                if (this.$typeCheck(v).isNull) this.$emit('selected-items', [])
+                else if (this.$typeCheck(v).isArray) this.$emit('selected-items', v)
                 else this.$emit('selected-items', [v])
             },
         },

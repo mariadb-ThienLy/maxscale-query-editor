@@ -35,9 +35,9 @@
                             ...headerStyle,
                             height: $parent.lineHeight,
                             maxWidth: header.width
-                                ? $help.handleAddPxUnit(header.width)
-                                : $help.handleAddPxUnit(headerWidthMap[i]),
-                            minWidth: $help.handleAddPxUnit(headerWidthMap[i]),
+                                ? $helper.handleAddPxUnit(header.width)
+                                : $helper.handleAddPxUnit(headerWidthMap[i]),
+                            minWidth: $helper.handleAddPxUnit(headerWidthMap[i]),
                         }"
                         class="th d-flex align-center px-3"
                         :class="{
@@ -53,7 +53,7 @@
                         <truncate-string
                             v-else
                             :text="`${header.text}`.toUpperCase()"
-                            :maxWidth="$typy(headerWidthMap[i]).safeNumber - 46"
+                            :maxWidth="$typeCheck(headerWidthMap[i]).safeNumber - 46"
                         />
                         <span v-if="header.text === '#'" class="ml-1 color text-field-text">
                             ({{ rowsLength }})
@@ -62,7 +62,7 @@
                             $vuetify.icons.arrowDown
                         </v-icon>
                         <span
-                            v-if="enableGrouping && $typy(header, 'groupable').safeBoolean"
+                            v-if="enableGrouping && $typeCheck(header, 'groupable').safeBoolean"
                             class="ml-2 text-none"
                             :class="[
                                 activeGroupBy === header.text && !isVertTable
@@ -83,7 +83,7 @@
             </div>
         </div>
         <div
-            :style="{ minWidth: `${$help.getScrollbarWidth()}px` }"
+            :style="{ minWidth: `${$helper.getScrollbarWidth()}px` }"
             class="d-inline-block dummy-header"
         />
     </div>
@@ -142,7 +142,7 @@ export default {
     },
     computed: {
         headerWidth() {
-            return `calc(100% - ${this.$help.getScrollbarWidth()}px)`
+            return `calc(100% - ${this.$helper.getScrollbarWidth()}px)`
         },
         tableHeaders() {
             return this.isVertTable
@@ -187,7 +187,7 @@ export default {
     methods: {
         //threshold, user cannot resize header smaller than this
         getMinHeaderWidth(header) {
-            return this.$typy(header, 'groupable').safeBoolean ? 117 : 67
+            return this.$typeCheck(header, 'groupable').safeBoolean ? 117 : 67
         },
         resetHeaderWidth() {
             let headerWidthMap = {}
@@ -204,7 +204,7 @@ export default {
                 let headerWidthMap = {}
                 // get width of each header then use it to set same width of corresponding cells
                 for (const [i, header] of this.tableHeaders.entries()) {
-                    if (this.$typy(this.$refs, `header__${i}`).safeArray.length) {
+                    if (this.$typeCheck(this.$refs, `header__${i}`).safeArray.length) {
                         let headerWidth = this.$refs[`header__${i}`][0].clientWidth
                         const minHeaderWidth = this.getMinHeaderWidth(header)
                         if (headerWidth < minHeaderWidth) headerWidth = minHeaderWidth

@@ -1,19 +1,66 @@
 <template>
-    <v-row>
-        <div class="query-page">
-            <div class="query-page--fullscreen">
-                query_max_rows {{ query_max_rows }}
-                <v-btn color="primary" @click="SET_QUERY_MAX_ROW(5000)"
-                    >set query_max_rows to 5000</v-btn
-                >
-                <v-btn @click="SET_QUERY_MAX_ROW(9000)">set query_max_rows to 9000</v-btn>
-                {{ $helper.dateFormat({ value: new Date(), formatType: 'DATE_RFC2822' }) }}
-            </div>
+    <div
+        v-resize.quiet="setCtrDim"
+        v-shortkey="{
+            'win-ctrl-s': ['ctrl', 's'],
+            'mac-cmd-s': ['meta', 's'],
+            'win-ctrl-enter': ['ctrl', 'enter'],
+            'mac-cmd-enter': ['meta', 'enter'],
+            'win-ctrl-shift-enter': ['ctrl', 'shift', 'enter'],
+            'mac-cmd-shift-enter': ['meta', 'shift', 'enter'],
+        }"
+        class="fill-height"
+        @shortkey="handleShortkey"
+    >
+        <div
+            ref="paneContainer"
+            class="query-page d-flex flex-column fill-height"
+            :class="{ 'query-page--fullscreen': is_fullscreen }"
+        >
+            <worksheets ref="wkesRef" :ctrDim="ctrDim" />
+            <confirm-dialog
+                ref="confirmDialog"
+                :title="$t('confirmations.leavePage')"
+                type="thatsRight"
+                minBodyWidth="624px"
+                :onSave="onLeave"
+                :onClose="cancelLeave"
+                :onCancel="cancelLeave"
+            >
+                <template v-slot:body-append>
+                    <v-checkbox
+                        v-model="confirmDelAll"
+                        class="small"
+                        :label="$t('disconnectAll')"
+                        color="primary"
+                        hide-details
+                    />
+                </template>
+                <template v-slot:body-prepend>
+                    <p>{{ $t('info.disconnectAll') }}</p>
+                </template>
+            </confirm-dialog>
         </div>
-    </v-row>
+    </div>
 </template>
+
 <script>
-/* import Vue from 'vue' */
+/*
+ * Copyright (c) 2020 MariaDB Corporation Ab
+ *
+ * Use of this software is governed by the Business Source License included
+ * in the LICENSE.TXT file and at www.mariadb.com/bsl11.
+ *
+ * Change Date: 2025-09-20
+ *
+ * On the date above, in accordance with the Business Source License, use
+ * of this software will be governed by version 2 or later of the General
+ * Public License.
+ */
+
+import Vue from 'vue'
+//TODO: vue-sfc-rollup has not configured to use i18n
+/* import '@/plugins/i18n' */
 import '@/plugins/logger'
 import '@/utils/helpers'
 import '@/plugins/moment'
@@ -22,37 +69,123 @@ import '@/plugins/typy'
 import '@/plugins/axios'
 import '@/plugins/shortkey'
 import store from '@/store'
-/* import commonComponents from '@/components/common' */
-import { mapState, mapMutations } from 'vuex'
-/* import '@/styles/main.scss' */
-/* Object.keys(commonComponents).forEach(name => {
+import commonComponents from '@/components/common'
+import '@/styles/main.scss'
+import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
+import Worksheets from '@/components/QueryPage/Worksheets.vue'
+Object.keys(commonComponents).forEach(name => {
     Vue.component(name, commonComponents[name])
-}) */
+})
 export default /*#__PURE__*/ {
     store,
     name: 'maxscale-query-editor', // vue component name
+    components: {
+        Worksheets,
+    },
     data() {
         return {
-            counter: 5,
-            initCounter: 5,
-            message: {
-                action: null,
-                amount: null,
-            },
+            ctrDim: {},
+            confirmDelAll: true,
         }
     },
     computed: {
         ...mapState({
-            query_max_rows: state => state.persisted.query_max_rows,
+            is_fullscreen: state => state.query.is_fullscreen,
+            active_wke_id: state => state.query.active_wke_id,
+            cnct_resources: state => state.query.cnct_resources,
         }),
+        ...mapGetters({
+            getDbCmplList: 'query/getDbCmplList',
+            getActiveWke: 'query/getActiveWke',
+        }),
+    },
+    watch: {
+        is_fullscreen() {
+            this.$helper.doubleRAF(() => this.setCtrDim())
+        },
+        async active_wke_id(v) {
+            if (v) this.UPDATE_SA_WKE_STATES(this.getActiveWke)
+        },
+    },
+    async created() {
+        this.handleAutoClearQueryHistory()
+        this.$helper.doubleRAF(() => this.setCtrDim())
+        await this.validatingConn()
+    },
+
+    async beforeRouteLeave(to, from, next) {
+        if (this.to) {
+            next()
+        } else {
+            this.to = to
+            // If next path is to login page (user logouts) or there is no active connections, don't need to show dialog
+            if (this.cnct_resources.length === 0) this.leavePage()
+            else
+                switch (to.path) {
+                    case '/login':
+                        this.leavePage()
+                        break
+                    case '/404':
+                        this.SET_SNACK_BAR_MESSAGE({
+                            text: [this.$t('info.notFoundConn')],
+                            type: 'error',
+                        })
+                        this.cancelLeave()
+                        this.clearConn()
+                        await this.validatingConn()
+                        break
+                    default:
+                        this.confirmDelAll = true
+                        this.$refs.confirmDialog.open()
+                }
+        }
     },
     methods: {
         ...mapMutations({
-            SET_QUERY_MAX_ROW: 'persisted/SET_QUERY_MAX_ROW',
+            UPDATE_SA_WKE_STATES: 'query/UPDATE_SA_WKE_STATES',
+            SET_SNACK_BAR_MESSAGE: 'SET_SNACK_BAR_MESSAGE',
         }),
+        ...mapActions({
+            validatingConn: 'query/validatingConn',
+            disconnectAll: 'query/disconnectAll',
+            clearConn: 'query/clearConn',
+            handleAutoClearQueryHistory: 'persisted/handleAutoClearQueryHistory',
+        }),
+        setCtrDim() {
+            const { width, height } = this.$refs.paneContainer.getBoundingClientRect()
+            this.ctrDim = { width, height }
+        },
+        async onLeave() {
+            if (this.confirmDelAll) await this.disconnectAll()
+            this.leavePage()
+        },
+        leavePage() {
+            this.$router.push(this.to)
+        },
+        cancelLeave() {
+            this.to = null
+        },
+        handleShortkey(e) {
+            const wkes = this.$refs.wkesRef.$refs
+            switch (e.srcKey) {
+                case 'win-ctrl-s':
+                case 'mac-cmd-s':
+                    wkes.pageToolbar.openFavoriteDialog()
+                    break
+                case 'win-ctrl-enter':
+                case 'mac-cmd-enter':
+                    wkes.wkeToolbar.handleRun('selected')
+                    break
+                case 'win-ctrl-shift-enter':
+                case 'mac-cmd-shift-enter':
+                    wkes.wkeToolbar.handleRun('all')
+                    break
+            }
+        },
     },
 }
 </script>
+
 <style lang="scss" scoped>
 $header-height: 50px;
 .query-page {

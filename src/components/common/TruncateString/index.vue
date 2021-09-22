@@ -87,15 +87,15 @@ export default {
     },
     watch: {
         text() {
-            this.$help.doubleRAF(() => this.checkTruncated())
+            this.$helper.doubleRAF(() => this.checkTruncated())
         },
         maxWidth() {
-            this.$help.doubleRAF(() => this.checkTruncated())
+            this.$helper.doubleRAF(() => this.checkTruncated())
         },
     },
     mounted() {
         // wait for DOM to render completely
-        this.$help.doubleRAF(() => this.checkTruncated())
+        this.$helper.doubleRAF(() => this.checkTruncated())
     },
     methods: {
         checkTruncated() {

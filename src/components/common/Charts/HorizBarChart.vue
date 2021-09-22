@@ -53,7 +53,10 @@ export default {
                     ],
                 },
             }
-            this.renderChart(this.chartData, this.$help.lodash.deepMerge(chartOption, this.options))
+            this.renderChart(
+                this.chartData,
+                this.$helper.lodash.deepMerge(chartOption, this.options)
+            )
         },
     },
 }

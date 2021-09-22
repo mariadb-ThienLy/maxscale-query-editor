@@ -82,7 +82,7 @@ export default {
              * 28 is the width of toggle button
              * 32 is the width of ungroup button
              */
-            return this.boundingWidth - this.$help.getScrollbarWidth() - 17 - 28 - 32
+            return this.boundingWidth - this.$helper.getScrollbarWidth() - 17 - 28 - 32
         },
     },
     methods: {
@@ -91,7 +91,7 @@ export default {
          */
         toggleRowGroup() {
             const targetIdx = this.collapsedRowGroups.findIndex(r =>
-                this.$help.lodash.isEqual(this.row, r)
+                this.$helper.lodash.isEqual(this.row, r)
             )
             if (targetIdx >= 0)
                 this.$emit('update-collapsed-row-groups', [

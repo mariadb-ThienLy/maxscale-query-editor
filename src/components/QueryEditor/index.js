@@ -105,7 +105,7 @@ export default {
             return [...keywordCmplItems, ...builtinFunctionCmplItems]
         },
         custCmplList() {
-            const dist = this.$help.lodash.cloneDeep(this.cmplList)
+            const dist = this.$helper.lodash.cloneDeep(this.cmplList)
             for (const item of dist) {
                 switch (item.type) {
                     case 'Table':
@@ -280,7 +280,7 @@ export default {
             ]
             for (const item of actionDescriptors) {
                 this.editor.addAction({
-                    id: this.$help.lodash.uniqueId('monaco_action_id_'),
+                    id: this.$helper.lodash.uniqueId('monaco_action_id_'),
                     precondition: null,
                     keybindingContext: null,
                     contextMenuGroupId: 'navigation',

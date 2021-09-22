@@ -805,7 +805,8 @@ export default {
                                         cmpList: completionList,
                                     }
                                 )
-                                if (!this.vue.$type(new_db_tree).isEmptyObject) tree = new_db_tree
+                                if (!this.vue.$typeCheck(new_db_tree).isEmptyObject)
+                                    tree = new_db_tree
                                 if (completionList.length) completionList = new_cmp_list
                             }
                         }

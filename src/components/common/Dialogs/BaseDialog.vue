@@ -84,7 +84,7 @@
  * Public License.
  */
 import { mapMutations } from 'vuex'
-import { OVERLAY_TRANSPARENT_LOADING } from 'store/overlayTypes'
+import { OVERLAY_TRANSPARENT_LOADING } from '@/store/overlayTypes'
 
 export default {
     name: 'base-dialog',
@@ -147,7 +147,7 @@ export default {
         },
         async waitClose() {
             // wait time out for loading animation
-            await this.$help.delay(600).then(() => this.SET_OVERLAY_TYPE(null))
+            await this.$helper.delay(600).then(() => this.SET_OVERLAY_TYPE(null))
             this.cleanUp()
             this.closeDialog()
         },

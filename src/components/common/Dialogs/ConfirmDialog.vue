@@ -10,7 +10,7 @@
         :closeImmediate="closeImmediate"
     >
         <template v-slot:form-body>
-            <p v-if="!$help.isNull(item)">
+            <p v-if="!$helper.isNull(item)">
                 <span class="confirmations-text">
                     {{ $t(`confirmations.${type}`, { targetId: item.id }) }}
                 </span>

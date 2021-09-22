@@ -9,6 +9,7 @@ import babel from '@rollup/plugin-babel'
 import minimist from 'minimist'
 import vuetify from 'rollup-plugin-vuetify'
 import PostCSS from 'rollup-plugin-postcss'
+import VueI18nPlugin from 'rollup-plugin-vue-i18n'
 // Get browserslist config and remove ie from es build targets
 const esbrowserslist = fs
     .readFileSync('./.browserslistrc')
@@ -49,6 +50,7 @@ const baseConfig = {
             data: {
                 // This helps to inject variables in each <style> tag of every Vue SFC
                 scss: () => `@import "${srcPath}/styles/constants.scss";`,
+                vue: () => `@import "${srcPath}/styles/constants.scss";`,
             },
         },
         postVue: [
@@ -57,7 +59,12 @@ const baseConfig = {
             }),
             commonjs(),
             vuetify(),
-            PostCSS(),
+            PostCSS({
+                modules: true,
+                extract: true,
+                sourceMap: true,
+                minimize: true,
+            }),
         ],
         babel: {
             exclude: 'node_modules/**',
@@ -100,6 +107,11 @@ if (!argv.format || argv.format === 'es') {
                 cssModulesOptions: {
                     generateScopedName: '[local]___[hash:base64:5]',
                 },
+                customBlocks: ['i18n'],
+            }),
+            VueI18nPlugin({
+                // `include` option for i18n resources bundling
+                include: path.resolve(__dirname, `${srcPath}/locales/**`),
             }),
             NodeResolve(),
             ...baseConfig.plugins.postVue,

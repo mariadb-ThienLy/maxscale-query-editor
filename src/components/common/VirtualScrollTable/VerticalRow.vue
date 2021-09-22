@@ -11,19 +11,19 @@
                     :key="`${h.text}_${headerWidthMap[0]}_0`"
                     class="td fill-height d-flex align-center border-bottom-none px-3"
                     :style="{
-                        minWidth: $help.handleAddPxUnit(headerWidthMap[0]),
+                        minWidth: $helper.handleAddPxUnit(headerWidthMap[0]),
                     }"
                 >
                     <truncate-string
                         :text="`${h.text}`.toUpperCase()"
-                        :maxWidth="$typy(headerWidthMap[0]).safeNumber - 24"
+                        :maxWidth="$typeCheck(headerWidthMap[0]).safeNumber - 24"
                     />
                 </div>
                 <div
                     :key="`${h.text}_${headerWidthMap[1]}_1`"
                     class="td fill-height d-flex align-center no-border px-3"
                     :style="{
-                        minWidth: $help.handleAddPxUnit(headerWidthMap[1]),
+                        minWidth: $helper.handleAddPxUnit(headerWidthMap[1]),
                     }"
                 >
                     <slot
