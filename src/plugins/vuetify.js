@@ -13,8 +13,6 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import icons from '@/icons'
-//TODO: vue-sfc-rollup has not configured to use i18n
-import i18n from '@/plugins/i18n'
 Vue.use(Vuetify)
 
 export default new Vuetify({
@@ -40,8 +38,5 @@ export default new Vuetify({
                 ['blue-azure']: '#0e6488',
             },
         },
-    },
-    lang: {
-        t: (key, ...params) => i18n.t(key, params),
     },
 })

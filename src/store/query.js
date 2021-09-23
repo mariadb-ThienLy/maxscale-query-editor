@@ -12,6 +12,7 @@
  */
 import { uniqBy, uniqueId, pickBy } from '@/utils/helpers'
 import queryHelper from './queryHelper'
+import axios from '@/plugins/axios'
 /**
  * @returns Initial connection related states
  */
@@ -296,7 +297,7 @@ export default {
     actions: {
         async fetchRcTargetNames({ state, commit }, resourceType) {
             try {
-                let res = await this.vue.$http.get(`/${resourceType}?fields[${resourceType}]=id`)
+                let res = await axios.get(`/${resourceType}?fields[${resourceType}]=id`)
                 if (res.data.data) {
                     const names = res.data.data.map(({ id, type }) => ({ id, type }))
                     commit('SET_RC_TARGET_NAMES_MAP', {
@@ -305,19 +306,19 @@ export default {
                     })
                 }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-fetchRcTargetNames')
+                const logger = this.vue.$helper.editorLogger('store-query-fetchRcTargetNames')
                 logger.error(e)
             }
         },
         async openConnect({ state, dispatch, commit }, { body, resourceType }) {
             const active_wke_id = state.active_wke_id
             try {
-                let res = await this.vue.$http.post(`/sql?persist=yes`, body)
+                let res = await axios.post(`/sql?persist=yes`, body)
                 if (res.status === 201) {
                     commit(
                         'SET_SNACK_BAR_MESSAGE',
                         {
-                            text: [this.i18n.t('info.connSuccessful')],
+                            text: ['info.connSuccessful'],
                             type: 'success',
                         },
                         { root: true }
@@ -334,7 +335,7 @@ export default {
                     commit('SET_CONN_ERR_STATE', { payload: false, active_wke_id })
                 }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-openConnect')
+                const logger = this.vue.$helper.editorLogger('store-query-openConnect')
                 logger.error(e)
                 commit('SET_CONN_ERR_STATE', { payload: true, active_wke_id })
             }
@@ -342,13 +343,13 @@ export default {
         async disconnect({ state, commit, dispatch }, { showSnackbar, id: cnctId }) {
             try {
                 const targetCnctResource = state.cnct_resources.find(rsrc => rsrc.id === cnctId)
-                let res = await this.vue.$http.delete(`/sql/${cnctId}`)
+                let res = await axios.delete(`/sql/${cnctId}`)
                 if (res.status === 204) {
                     if (showSnackbar)
                         commit(
                             'SET_SNACK_BAR_MESSAGE',
                             {
-                                text: [this.i18n.t('info.disconnectSuccessful')],
+                                text: ['info.disconnectSuccessful'],
                                 type: 'success',
                             },
                             { root: true }
@@ -357,7 +358,7 @@ export default {
                     dispatch('resetWkeStates', cnctId)
                 }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-disconnect')
+                const logger = this.vue.$helper.editorLogger('store-query-disconnect')
                 logger.error(e)
             }
         },
@@ -371,7 +372,7 @@ export default {
                     })
                 }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-disconnectAll')
+                const logger = this.vue.$helper.editorLogger('store-query-disconnectAll')
                 logger.error(e)
             }
         },
@@ -381,14 +382,14 @@ export default {
                 commit('DELETE_CNCT_RESOURCE', curr_cnct_resource)
                 dispatch('resetWkeStates', curr_cnct_resource.id)
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-clearConn')
+                const logger = this.vue.$helper.editorLogger('store-query-clearConn')
                 logger.error(e)
             }
         },
         async validatingConn({ state, commit, dispatch }) {
             try {
                 commit('SET_IS_VALIDATING_CONN', true)
-                const res = await this.vue.$http.get(`/sql/`)
+                const res = await axios.get(`/sql/`)
                 const resConnIds = res.data.data.map(conn => conn.id)
                 const clientConnIds = queryHelper.getClientConnIds()
                 if (resConnIds.length === 0) {
@@ -417,7 +418,7 @@ export default {
                 commit('SET_IS_VALIDATING_CONN', false)
             } catch (e) {
                 commit('SET_IS_VALIDATING_CONN', false)
-                const logger = this.vue.$queryEditorLogger('store-query-validatingConn')
+                const logger = this.vue.$helper.editorLogger('store-query-validatingConn')
                 logger.error(e)
             }
         },
@@ -428,7 +429,7 @@ export default {
                     dispatch('resetWkeStates', id)
                 })
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-deleteInvalidConn')
+                const logger = this.vue.$helper.editorLogger('store-query-deleteInvalidConn')
                 logger.error(e)
             }
         },
@@ -445,12 +446,12 @@ export default {
             try {
                 commit('ADD_NEW_WKE')
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-handleAddNewWke')
+                const logger = this.vue.$helper.editorLogger('store-query-handleAddNewWke')
                 logger.error(e)
                 commit(
                     'SET_SNACK_BAR_MESSAGE',
                     {
-                        text: [this.i18n.t('errors.persistentStorage')],
+                        text: ['errors.persistentStorage'],
                         type: 'error',
                     },
                     { root: true }
@@ -488,7 +489,7 @@ export default {
                     id: active_wke_id,
                     payload: false,
                 })
-                const logger = this.vue.$queryEditorLogger(`store-query-${actionName}`)
+                const logger = this.vue.$helper.editorLogger(`store-query-${actionName}`)
                 logger.error(e)
                 catchAction()
             }
@@ -501,7 +502,7 @@ export default {
         async getDbs({ state, commit }) {
             const curr_cnct_resource = state.curr_cnct_resource
             try {
-                const res = await this.vue.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                const res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: 'SELECT * FROM information_schema.SCHEMATA;',
                 })
                 let cmpList = []
@@ -563,7 +564,7 @@ export default {
                 }
                 return { db_tree, cmpList }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-getDbs')
+                const logger = this.vue.$helper.editorLogger('store-query-getDbs')
                 logger.error(e)
             }
         },
@@ -595,7 +596,7 @@ export default {
                         break
                 }
                 // eslint-disable-next-line vue/max-len
-                const res = await this.vue.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                const res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: query,
                 })
                 const dataRows = this.vue.$helper.getObjectRows({
@@ -649,7 +650,7 @@ export default {
                 })
                 return { dbName, gch, cmpList }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-getDbGrandChild')
+                const logger = this.vue.$helper.editorLogger('store-query-getDbGrandChild')
                 logger.error(e)
             }
         },
@@ -679,7 +680,7 @@ export default {
                         query = `SELECT COLUMN_NAME, COLUMN_TYPE, COLUMN_KEY, PRIVILEGES FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = "${dbName}" AND TABLE_NAME = "${tblName}";`
                         break
                 }
-                const res = await this.vue.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                const res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: query,
                 })
 
@@ -709,7 +710,7 @@ export default {
                 })
                 return { dbName, tblName, gch, cmpList }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-getTableGrandChild')
+                const logger = this.vue.$helper.editorLogger('store-query-getTableGrandChild')
                 logger.error(e)
             }
         },
@@ -754,7 +755,7 @@ export default {
                     }
                 }
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-getTreeData')
+                const logger = this.vue.$helper.editorLogger('store-query-getTreeData')
                 logger.error(e)
                 return { new_db_tree: {}, new_cmp_list: [] }
             }
@@ -805,7 +806,7 @@ export default {
                                         cmpList: completionList,
                                     }
                                 )
-                                if (!this.vue.$typeCheck(new_db_tree).isEmptyObject)
+                                if (!this.vue.$helper.typeCheck(new_db_tree).isEmptyObject)
                                     tree = new_db_tree
                                 if (completionList.length) completionList = new_cmp_list
                             }
@@ -859,7 +860,7 @@ export default {
                             break
                     }
 
-                    let res = await this.vue.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                    let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
                         sql,
                         max_rows: rootState.persisted.query_max_rows,
                     })
@@ -914,7 +915,7 @@ export default {
                         },
                     })
 
-                    let res = await this.vue.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                    let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
                         sql: query,
                         max_rows: rootState.persisted.query_max_rows,
                     })
@@ -954,7 +955,7 @@ export default {
             const curr_cnct_resource = state.curr_cnct_resource
             const active_wke_id = state.active_wke_id
             try {
-                let res = await this.vue.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: `USE ${this.vue.$helper.escapeIdentifiers(db)};`,
                 })
                 if (res.data.data.attributes.results[0].errno) {
@@ -969,7 +970,7 @@ export default {
                     )
                 } else commit('SET_ACTIVE_DB', { payload: db, active_wke_id })
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-useDb')
+                const logger = this.vue.$helper.editorLogger('store-query-useDb')
                 logger.error(e)
             }
         },
@@ -978,7 +979,7 @@ export default {
             const active_db = state.active_db
             const active_wke_id = state.active_wke_id
             try {
-                let res = await this.vue.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: 'SELECT DATABASE()',
                 })
                 const resActiveDb = res.data.data.attributes.results[0].data.flat()[0]
@@ -986,7 +987,7 @@ export default {
                 else if (active_db !== resActiveDb)
                     commit('SET_ACTIVE_DB', { payload: resActiveDb, active_wke_id })
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-query-updateActiveDb')
+                const logger = this.vue.$helper.editorLogger('store-query-updateActiveDb')
                 logger.error(e)
             }
         },

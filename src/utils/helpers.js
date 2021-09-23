@@ -12,7 +12,10 @@
  */
 import Vue from 'vue'
 import update from 'immutability-helper'
-
+import { t } from 'typy'
+import logger from '@/plugins/logger'
+export const typeCheck = t
+export const editorLogger = logger
 export const isEmpty = require('lodash/isEmpty')
 export const cloneDeep = require('lodash/cloneDeep')
 export const isEqual = require('lodash/isEqual')
@@ -753,6 +756,8 @@ Object.defineProperties(Vue.prototype, {
                 preventNonInteger,
                 addDaysToNow,
                 daysDiff,
+                typeCheck,
+                editorLogger,
             }
         },
     },

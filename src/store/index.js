@@ -16,11 +16,8 @@ import query, { defWorksheetState } from './query'
 import persisted from './persisted'
 import { APP_CONFIG } from '@/utils/constants'
 import createPersistedState from 'vuex-persistedstate'
-import i18n from 'plugins/i18n'
-//TODO: vue-sfc-rollup has not configured to use i18n
 const plugins = store => {
     store.vue = Vue.prototype
-    store.i18n = i18n
 }
 
 const store = new Vuex.Store({

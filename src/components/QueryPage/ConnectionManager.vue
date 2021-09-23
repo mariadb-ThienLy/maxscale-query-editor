@@ -15,7 +15,7 @@
             hide-details
             item-text="name"
             return-object
-            :placeholder="$t('selectConnection')"
+            :placeholder="'selectConnection'"
             :disabled="disabled"
             @change="onSelectConn"
         >
@@ -66,7 +66,7 @@
                                     </v-icon>
                                 </v-btn>
                             </template>
-                            <span>{{ $t('disconnect') }}</span>
+                            <span>{{ 'disconnect' }}</span>
                         </v-tooltip>
                     </template>
                 </div>
@@ -81,7 +81,7 @@
         />
         <confirm-dialog
             ref="confirmDialog"
-            :title="$t('disconnectConn')"
+            :title="'disconnectConn'"
             type="disconnect"
             closeImmediate
             :item="{ id: targetConn.name }"
@@ -118,7 +118,7 @@ export default {
             isConnDialogOpened: false,
             chosenConn: {},
             newConnOption: {
-                name: this.$t('newConnection'),
+                name: 'newConnection',
             },
             targetConn: {}, // target connection to be deleted
         }
@@ -138,7 +138,7 @@ export default {
         }),
         usedConnections() {
             return this.worksheets_arr.map(
-                wke => this.$typeCheck(wke, 'curr_cnct_resource.id').safeString
+                wke => this.$helper.typeCheck(wke, 'curr_cnct_resource.id').safeString
             )
         },
         connOptions() {
@@ -207,7 +207,7 @@ export default {
         },
         async onSelectConn(v) {
             if (this.isCreatingNewConn) this.openConnDialog()
-            else if (this.$typeCheck(v, 'id').isDefined) {
+            else if (this.$helper.typeCheck(v, 'id').isDefined) {
                 this.SET_CURR_CNCT_RESOURCE({ payload: v, active_wke_id: this.active_wke_id })
                 if (this.curr_cnct_resource.id) {
                     await this.initialFetch(v)

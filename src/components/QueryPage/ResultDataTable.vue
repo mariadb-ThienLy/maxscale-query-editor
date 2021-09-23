@@ -8,12 +8,12 @@
                 outlined
                 height="28"
                 class="std filter-result mr-2"
-                :placeholder="$t('filterResult')"
+                :placeholder="'filterResult'"
                 hide-details
             />
             <column-list
                 v-model="filterHeaderIdxs"
-                :label="$t('filterBy')"
+                :label="'filterBy'"
                 :cols="tableHeaders"
                 :maxHeight="tableHeight - 20"
             />
@@ -35,15 +35,15 @@
                         v-on="on"
                         @click="$emit('on-delete-selected', selectedItems)"
                     >
-                        {{ $t('delete') }}
+                        {{ 'delete' }}
                     </v-btn>
                 </template>
-                <span>{{ $t('deleteSelectedRows') }}</span>
+                <span>{{ 'deleteSelectedRows' }}</span>
             </v-tooltip>
             <result-export :rows="filteredRows_wo_idx" :headers="visHeaders_wo_idx" />
             <column-list
                 v-model="visHeaderIdxs"
-                :label="$t('columns')"
+                :label="'columns'"
                 :cols="tableHeaders"
                 :maxHeight="tableHeight - 20"
             />
@@ -72,7 +72,7 @@
                         </v-icon>
                     </v-btn>
                 </template>
-                <span>{{ $t(isVertTable ? 'switchToHorizTable' : 'switchToVertTable') }}</span>
+                <span>{{ isVertTable ? 'switchToHorizTable' : 'switchToVertTable' }}</span>
             </v-tooltip>
         </div>
         <!-- Keep it in memory, negative height crashes v-virtual-scroll -->
@@ -164,7 +164,7 @@ export default {
                 headers = [
                     { text: '#', maxWidth: 'max-content' },
                     ...this.headers.map(h =>
-                        this.showGroupBy && !this.$typeCheck(h, 'groupable').isDefined
+                        this.showGroupBy && !this.$helper.typeCheck(h, 'groupable').isDefined
                             ? { ...h, groupable: true }
                             : h
                     ),

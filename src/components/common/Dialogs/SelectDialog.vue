@@ -10,9 +10,9 @@
     >
         <template v-slot:form-body>
             <p class="select-label">
-                {{ $tc('specify', multiple ? 2 : 1) }}
+                {{ `specify ${multiple ? 2 : 1}` }}
 
-                {{ $tc(entityName, multiple ? 2 : 1) }}
+                {{ entityName }} {{ multiple ? 2 : 1 }}
             </p>
 
             <select-dropdown
@@ -81,8 +81,8 @@ export default {
         selectedItems: {
             deep: true,
             handler(v) {
-                if (this.$typeCheck(v).isNull) this.$emit('selected-items', [])
-                else if (this.$typeCheck(v).isArray) this.$emit('selected-items', v)
+                if (this.$helper.typeCheck(v).isNull) this.$emit('selected-items', [])
+                else if (this.$helper.typeCheck(v).isArray) this.$emit('selected-items', v)
                 else this.$emit('selected-items', [v])
             },
         },

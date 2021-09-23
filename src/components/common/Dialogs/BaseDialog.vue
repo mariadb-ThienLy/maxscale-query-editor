@@ -50,7 +50,7 @@
                         depressed
                         @click="cancel"
                     >
-                        {{ $t(cancelText) }}
+                        {{ cancelText }}
                     </v-btn>
                     <v-btn
                         small
@@ -62,7 +62,7 @@
                         :disabled="!hasChanged || !isFormValid"
                         @click="save"
                     >
-                        {{ $t(saveText) }}
+                        {{ saveText }}
                     </v-btn>
                 </slot>
             </v-card-actions>

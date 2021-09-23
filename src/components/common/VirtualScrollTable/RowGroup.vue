@@ -47,7 +47,7 @@
                         <v-icon size="10" color="deep-ocean"> $vuetify.icons.close</v-icon>
                     </v-btn>
                 </template>
-                <span>{{ $t('ungroup') }}</span>
+                <span>{{ 'ungroup' }}</span>
             </v-tooltip>
         </div>
     </div>

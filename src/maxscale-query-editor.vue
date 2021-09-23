@@ -20,7 +20,7 @@
             <worksheets ref="wkesRef" :ctrDim="ctrDim" />
             <confirm-dialog
                 ref="confirmDialog"
-                :title="$t('confirmations.leavePage')"
+                :title="'confirmations.leavePage'"
                 type="thatsRight"
                 minBodyWidth="624px"
                 :onSave="onLeave"
@@ -31,13 +31,13 @@
                     <v-checkbox
                         v-model="confirmDelAll"
                         class="small"
-                        :label="$t('disconnectAll')"
+                        :label="'disconnectAll'"
                         color="primary"
                         hide-details
                     />
                 </template>
                 <template v-slot:body-prepend>
-                    <p>{{ $t('info.disconnectAll') }}</p>
+                    <p>info.disconnectAll</p>
                 </template>
             </confirm-dialog>
         </div>
@@ -57,20 +57,16 @@
  * of this software will be governed by version 2 or later of the General
  * Public License.
  */
-
+import '@/styles/main.scss'
 import Vue from 'vue'
-//TODO: vue-sfc-rollup has not configured to use i18n
-/* import '@/plugins/i18n' */
 import '@/plugins/logger'
 import '@/utils/helpers'
 import '@/plugins/moment'
 import '@/plugins/vuex'
-import '@/plugins/typy'
-import '@/plugins/axios'
 import '@/plugins/shortkey'
 import store from '@/store'
 import commonComponents from '@/components/common'
-import '@/styles/main.scss'
+
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import Worksheets from '@/components/QueryPage/Worksheets.vue'
 Object.keys(commonComponents).forEach(name => {
@@ -127,7 +123,7 @@ export default /*#__PURE__*/ {
                         break
                     case '/404':
                         this.SET_SNACK_BAR_MESSAGE({
-                            text: [this.$t('info.notFoundConn')],
+                            text: ['info.notFoundConn'],
                             type: 'error',
                         })
                         this.cancelLeave()

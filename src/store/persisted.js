@@ -63,12 +63,12 @@ export default {
                     },
                 })
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-persisted-pushQueryLog')
+                const logger = this.vue.$helper.editorLogger('store-persisted-pushQueryLog')
                 logger.error(e)
                 commit(
                     'SET_SNACK_BAR_MESSAGE',
                     {
-                        text: [this.i18n.t('errors.persistentStorage')],
+                        text: ['errors.persistentStorage'],
                         type: 'error',
                     },
                     { root: true }
@@ -89,12 +89,12 @@ export default {
                     },
                 })
             } catch (e) {
-                const logger = this.vue.$queryEditorLogger('store-persisted-pushQueryFavorite')
+                const logger = this.vue.$helper.editorLogger('store-persisted-pushQueryFavorite')
                 logger.error(e)
                 commit(
                     'SET_SNACK_BAR_MESSAGE',
                     {
-                        text: [this.i18n.t('errors.persistentStorage')],
+                        text: ['errors.persistentStorage'],
                         type: 'error',
                     },
                     { root: true }

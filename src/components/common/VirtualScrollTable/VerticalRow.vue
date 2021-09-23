@@ -16,7 +16,7 @@
                 >
                     <truncate-string
                         :text="`${h.text}`.toUpperCase()"
-                        :maxWidth="$typeCheck(headerWidthMap[0]).safeNumber - 24"
+                        :maxWidth="$helper.typeCheck(headerWidthMap[0]).safeNumber - 24"
                     />
                 </div>
                 <div

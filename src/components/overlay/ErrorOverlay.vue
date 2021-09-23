@@ -2,13 +2,13 @@
     <v-overlay z-index="9999" :opacity="1" :absolute="true">
         <div class="overlay">
             <div class="overlay-content">
-                <loading-message :text="$t('welcomeTo')" />
+                <loading-message :text="'welcomeTo'" />
                 <div class="loading-icon">
                     <img src="@/assets/icon-globe-error.svg" alt="MariaDB" class="loading-icon" />
                 </div>
                 <div class="color text-error text-center">
-                    {{ $t('errors.serviceUnavailable') }} <br />
-                    {{ $t('errors.refreshLater') }}
+                    {{ 'errors.serviceUnavailable' }} <br />
+                    {{ 'errors.refreshLater' }}
                 </div>
             </div>
         </div>

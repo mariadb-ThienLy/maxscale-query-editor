@@ -65,8 +65,8 @@
                             </div>
                         </template>
                         <span class="color text-text py-2 px-4">
-                            {{ $t('connectedTo') }}
-                            {{ $typeCheck(wke, 'curr_cnct_resource.name').safeString }}
+                            {{ 'connectedTo' }}
+                            {{ $helper.typeCheck(wke, 'curr_cnct_resource.name').safeString }}
                         </span>
                     </v-tooltip>
                 </v-tab>

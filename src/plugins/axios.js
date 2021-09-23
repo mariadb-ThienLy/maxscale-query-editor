@@ -10,7 +10,6 @@
  * of this software will be governed by version 2 or later of the General
  * Public License.
  */
-import Vue from 'vue'
 import ax from 'axios'
 import store from '@/store'
 
@@ -52,11 +51,4 @@ apiClient.interceptors.response.use(
     }
 )
 
-// immutable axios instances
-Object.defineProperties(Vue.prototype, {
-    $http: {
-        get() {
-            return apiClient
-        },
-    },
-})
+export default apiClient

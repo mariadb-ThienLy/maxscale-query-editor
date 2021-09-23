@@ -13,7 +13,7 @@
                             v-if="!is_sidebar_collapsed"
                             class="color text-small-text db-tb-list__title d-inline-block text-truncate text-uppercase"
                         >
-                            {{ $t('schemas') }}
+                            {{ 'schemas' }}
                         </span>
                         <v-tooltip
                             v-if="!is_sidebar_collapsed"
@@ -34,7 +34,7 @@
                                     </v-icon>
                                 </v-btn>
                             </template>
-                            <span>{{ $t('reload') }}</span>
+                            <span>{{ 'reload' }}</span>
                         </v-tooltip>
                         <v-tooltip
                             top
@@ -60,7 +60,7 @@
                                     </v-icon>
                                 </v-btn>
                             </template>
-                            <span>{{ is_sidebar_collapsed ? $t('expand') : $t('collapse') }}</span>
+                            <span>{{ is_sidebar_collapsed ? 'expand' : 'collapse' }}</span>
                         </v-tooltip>
                     </div>
                     <v-text-field
@@ -72,7 +72,7 @@
                         outlined
                         height="28"
                         class="std filter-objects"
-                        :placeholder="$t('filterSchemaObjects')"
+                        :placeholder="'filterSchemaObjects'"
                         :disabled="shouldDisableBtn"
                     />
                 </div>

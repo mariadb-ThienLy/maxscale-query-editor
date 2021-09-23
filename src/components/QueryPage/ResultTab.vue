@@ -1,7 +1,7 @@
 <template>
     <div class="fill-height">
         <div ref="header" class="pb-2 result-header d-flex align-center">
-            <span v-if="!queryTxt" v-html="$t('resultTabGuide')" />
+            <span v-if="!queryTxt" v-html="'resultTabGuide'" />
             <v-menu
                 v-else
                 offset-y
@@ -14,7 +14,7 @@
             >
                 <template v-slot:activator="{ on }">
                     <span class="mr-4 pointer color text-links " v-on="on">
-                        {{ $t('queryTxt') }}
+                        {{ 'queryTxt' }}
                     </span>
                 </template>
                 <v-sheet class="text-body-2 py-2 px-4 color bg-background text-navigation">
@@ -52,7 +52,7 @@
 
             <v-tooltip
                 v-if="
-                    $typeCheck(resultData[activeResSet], 'data').isDefined &&
+                    $helper.typeCheck(resultData[activeResSet], 'data').isDefined &&
                         !resultData[activeResSet].complete
                 "
                 top
@@ -64,10 +64,10 @@
                         <v-icon size="16" color="error" class="mr-2">
                             $vuetify.icons.alertWarning
                         </v-icon>
-                        {{ $t('incomplete') }}
+                        {{ 'incomplete' }}
                     </div>
                 </template>
-                <span> {{ $t('info.queryIncomplete') }}</span>
+                <span> {{ 'info.queryIncomplete' }}</span>
             </v-tooltip>
         </div>
 
@@ -83,7 +83,7 @@
                     <keep-alive :key="name">
                         <template v-if="activeResSet === name">
                             <result-data-table
-                                v-if="$typeCheck(resSet, 'data').isDefined"
+                                v-if="$helper.typeCheck(resSet, 'data').isDefined"
                                 :height="dynDim.height - headerHeight"
                                 :width="dynDim.width"
                                 :headers="resSet.fields.map(field => ({ text: field }))"
@@ -157,18 +157,18 @@ export default {
             getQueryTotalDuration: 'query/getQueryTotalDuration',
         }),
         queryTxt() {
-            return this.$typeCheck(this.getResults, 'attributes.sql').safeObject
+            return this.$helper.typeCheck(this.getResults, 'attributes.sql').safeObject
         },
         resultData() {
-            if (this.$typeCheck(this.getResults, 'attributes.results').isDefined) {
+            if (this.$helper.typeCheck(this.getResults, 'attributes.results').isDefined) {
                 let resultData = {}
                 let resSetCount = 0
                 let resCount = 0
                 for (const res of this.getResults.attributes.results) {
-                    if (this.$typeCheck(res, 'data').isDefined) {
+                    if (this.$helper.typeCheck(res, 'data').isDefined) {
                         ++resSetCount
                         resultData[`Result set ${resSetCount}`] = res
-                    } else if (this.$typeCheck(res, 'errno').isDefined) {
+                    } else if (this.$helper.typeCheck(res, 'errno').isDefined) {
                         resultData[`Error`] = res
                     } else {
                         ++resCount
@@ -198,7 +198,7 @@ export default {
          */
         getErrTabName() {
             for (const key in this.resultData) {
-                if (this.$typeCheck(this.resultData[key], 'errno').isDefined) return key
+                if (this.$helper.typeCheck(this.resultData[key], 'errno').isDefined) return key
             }
         },
         setHeaderHeight() {

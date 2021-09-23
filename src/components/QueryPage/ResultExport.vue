@@ -21,7 +21,7 @@
             <base-dialog
                 v-model="isConfigDialogOpened"
                 :onSave="onExport"
-                :title="$t('exportResults')"
+                :title="'exportResults'"
                 saveText="export"
                 minBodyWidth="512px"
                 :lazyValidation="false"
@@ -32,7 +32,7 @@
                         <v-row class="my-0 mx-n1">
                             <v-col cols="12" md="12" class="pa-1">
                                 <label class="field__label color text-small-text label-required">
-                                    {{ $t('fileName') }}
+                                    {{ 'fileName' }}
                                 </label>
                                 <v-text-field
                                     v-model="fileName"
@@ -41,11 +41,7 @@
                                     dense
                                     outlined
                                     :height="36"
-                                    :rules="[
-                                        val =>
-                                            !!val ||
-                                            $t('errors.requiredInput', { inputName: 'File name' }),
-                                    ]"
+                                    :rules="[val => !!val || 'errors.requiredInput File name']"
                                     required
                                     hide-details="auto"
                                 />
@@ -53,7 +49,7 @@
 
                             <v-col cols="12" md="12" class="pa-1">
                                 <label class="field__label color text-small-text label-required">
-                                    {{ $t('fileFormat') }}
+                                    {{ 'fileFormat' }}
                                 </label>
                                 <v-select
                                     v-model="selectedFormat"
@@ -69,20 +65,16 @@
                                     return-object
                                     item-text="extension"
                                     item-value="contentType"
-                                    :rules="[
-                                        v =>
-                                            !!v ||
-                                            $t('errors.requiredInput', {
-                                                inputName: 'File format',
-                                            }),
-                                    ]"
+                                    :rules="[v => !!v || 'errors.requiredInput File format']"
                                     hide-details="auto"
                                     required
                                 />
                             </v-col>
                         </v-row>
                         <v-row
-                            v-if="$typeCheck(selectedFormat, 'extension').safeObject === 'csv'"
+                            v-if="
+                                $helper.typeCheck(selectedFormat, 'extension').safeObject === 'csv'
+                            "
                             class="mx-n1"
                         >
                             <v-col cols="12" md="12" class="pa-1 mt-1">
@@ -94,12 +86,12 @@
                                     class="ma-0 pt-0"
                                 >
                                     <v-radio
-                                        :label="$t('withHeaders')"
+                                        :label="'withHeaders'"
                                         :value="true"
                                         class="field__label"
                                     />
                                     <v-radio
-                                        :label="$t('withoutHeaders')"
+                                        :label="'withoutHeaders'"
                                         :value="false"
                                         class="field__label"
                                     />
@@ -108,7 +100,7 @@
 
                             <v-col cols="12" :md="chosenDelimiter.val ? 12 : 6" class="pa-1">
                                 <label class="field__label color text-small-text">
-                                    {{ $t('delimiter') }}
+                                    {{ 'delimiter' }}
                                 </label>
                                 <v-select
                                     v-model="chosenDelimiter"
@@ -124,20 +116,14 @@
                                         bottom: true,
                                         offsetY: true,
                                     }"
-                                    :rules="[
-                                        v =>
-                                            !!v ||
-                                            $t('errors.requiredInput', {
-                                                inputName: 'Delimiter',
-                                            }),
-                                    ]"
+                                    :rules="[v => !!v || 'errors.requiredInput Delimiter']"
                                     hide-details="auto"
                                     required
                                 />
                             </v-col>
                             <v-col v-if="!chosenDelimiter.val" cols="12" md="6" class="pa-1">
                                 <label class="field__label color text-small-text">
-                                    {{ $t('custdelimiter') }}
+                                    {{ 'custdelimiter' }}
                                 </label>
                                 <v-text-field
                                     v-model="custDelimiter"
@@ -145,13 +131,7 @@
                                     dense
                                     outlined
                                     :height="36"
-                                    :rules="[
-                                        v =>
-                                            !!v ||
-                                            $t('errors.requiredInput', {
-                                                inputName: $t('custdelimiter'),
-                                            }),
-                                    ]"
+                                    :rules="[v => !!v || 'errors.requiredInput custdelimiter']"
                                     hide-details="auto"
                                     required
                                 />
@@ -161,7 +141,7 @@
                 </template>
             </base-dialog>
         </template>
-        <span>{{ $t('exportResults') }}</span>
+        <span>{{ 'exportResults' }}</span>
     </v-tooltip>
 </template>
 

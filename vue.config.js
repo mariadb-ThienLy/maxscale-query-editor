@@ -49,62 +49,6 @@ module.exports = {
                 localesToKeep: [], //e.g. 'ru', 'vi'
             },
         ])
-        config.plugin('MonacoWebpackPlugin').use(require('monaco-editor-webpack-plugin'), [
-            {
-                languages: ['mariadb'],
-                // https://github.com/microsoft/monaco-editor-webpack-plugin/blob/main/src/features.ts
-                features: [
-                    '!accessibilityHelp',
-                    '!anchorSelect',
-                    '!bracketMatching',
-                    '!caretOperations',
-                    'clipboard',
-                    '!codeAction',
-                    '!codelens',
-                    '!colorPicker',
-                    'comment',
-                    'contextmenu',
-                    'coreCommands',
-                    '!cursorUndo',
-                    'dnd',
-                    'documentSymbols',
-                    'find',
-                    'folding',
-                    'fontZoom',
-                    'format',
-                    '!gotoError',
-                    '!gotoLine',
-                    '!gotoSymbol',
-                    '!hover',
-                    '!iPadShowKeyboard',
-                    '!inPlaceReplace',
-                    '!indentation',
-                    '!inlineHints',
-                    '!inspectTokens',
-                    '!linesOperations',
-                    '!linkedEditing',
-                    '!links',
-                    'multicursor',
-                    '!parameterHints',
-                    'quickCommand',
-                    '!quickHelp',
-                    '!quickOutline',
-                    '!referenceSearch',
-                    '!rename',
-                    '!smartSelect',
-                    '!snippets',
-                    'suggest',
-                    '!toggleHighContrast',
-                    '!toggleTabFocusMode',
-                    '!transpose',
-                    '!unusualLineTerminators',
-                    '!viewportSemanticTokens',
-                    '!wordHighlighter',
-                    '!wordOperations',
-                    '!wordPartOperations',
-                ],
-            },
-        ])
         config.externals = {
             moment: 'moment',
             vuetify: 'vuetify/lib',
@@ -114,15 +58,6 @@ module.exports = {
     transpileDependencies: ['vuetify'],
 
     outputDir: `dist`,
-
-    pluginOptions: {
-        i18n: {
-            locale: 'en',
-            fallbackLocale: 'en',
-            localeDir: 'locales',
-            enableInSFC: true,
-        },
-    },
 
     productionSourceMap: false,
     css: { extract: false },

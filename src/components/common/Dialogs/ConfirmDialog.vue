@@ -12,7 +12,7 @@
         <template v-slot:form-body>
             <p v-if="!$helper.isNull(item)">
                 <span class="confirmations-text">
-                    {{ $t(`confirmations.${type}`, { targetId: item.id }) }}
+                    {{ `confirmations.${type}` }}
                 </span>
             </p>
             <slot name="body-prepend"></slot>
@@ -35,7 +35,7 @@
                 depressed
                 @click="cancel"
             >
-                {{ $t('cancel') }}
+                cancel
             </v-btn>
             <v-btn
                 small
@@ -46,7 +46,7 @@
                 depressed
                 @click="save"
             >
-                {{ $t(type) }}
+                {{ type }}
             </v-btn>
         </template>
     </base-dialog>

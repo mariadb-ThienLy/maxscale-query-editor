@@ -9,7 +9,7 @@ import babel from '@rollup/plugin-babel'
 import minimist from 'minimist'
 import vuetify from 'rollup-plugin-vuetify'
 import PostCSS from 'rollup-plugin-postcss'
-import VueI18nPlugin from 'rollup-plugin-vue-i18n'
+import monaco from 'rollup-plugin-monaco-editor'
 // Get browserslist config and remove ie from es build targets
 const esbrowserslist = fs
     .readFileSync('./.browserslistrc')
@@ -59,12 +59,6 @@ const baseConfig = {
             }),
             commonjs(),
             vuetify(),
-            PostCSS({
-                modules: true,
-                extract: true,
-                sourceMap: true,
-                minimize: true,
-            }),
         ],
         babel: {
             exclude: 'node_modules/**',
@@ -85,6 +79,8 @@ const external = [
     'vue-moment',
     'moment',
     'axios',
+    'monaco-editor',
+    'monaco-editor-webpack-plugin',
 ]
 // Customize configs for using as SFC
 const buildFormats = []
@@ -94,9 +90,10 @@ if (!argv.format || argv.format === 'es') {
         input: 'src/entry.esm.js',
         external,
         output: {
-            file: 'dist/maxscale-query-editor.esm.js',
-            format: 'esm',
+            format: 'es',
+            dir: 'dist',
             exports: 'named',
+            inlineDynamicImports: true,
         },
         plugins: [
             replace({ preventAssignment: true, ...baseConfig.plugins.replace }),
@@ -107,11 +104,6 @@ if (!argv.format || argv.format === 'es') {
                 cssModulesOptions: {
                     generateScopedName: '[local]___[hash:base64:5]',
                 },
-                customBlocks: ['i18n'],
-            }),
-            VueI18nPlugin({
-                // `include` option for i18n resources bundling
-                include: path.resolve(__dirname, `${srcPath}/locales/**`),
             }),
             NodeResolve(),
             ...baseConfig.plugins.postVue,
@@ -126,6 +118,15 @@ if (!argv.format || argv.format === 'es') {
                         },
                     ],
                 ],
+            }),
+            PostCSS({
+                modules: true,
+                extract: true,
+                sourceMap: true,
+                minimize: true,
+            }),
+            monaco({
+                languages: ['mariadb'],
             }),
         ],
     }

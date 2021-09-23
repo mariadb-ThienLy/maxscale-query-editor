@@ -13,17 +13,9 @@
         :class="[required && 'error--text__bottom']"
         :menu-props="{ contentClass: 'mariadb-select-v-menu', bottom: true, offsetY: true }"
         :placeholder="
-            showPlaceHolder
-                ? $tc('select', multiple ? 2 : 1, {
-                      entityName: $tc(entityName, multiple ? 2 : 1),
-                  })
-                : ''
+            showPlaceHolder ? `select ${multiple ? 2 : 1} ${entityName} ${multiple ? 2 : 1}` : ''
         "
-        :no-data-text="
-            $tc('noEntityAvailable', multiple ? 2 : 1, {
-                entityName: $tc(entityName, multiple ? 2 : 1),
-            })
-        "
+        :no-data-text="'noEntityAvailable'"
         :rules="rules.requiredField"
         :hide-details="!required"
         :error-messages="errorMessages"
@@ -36,7 +28,7 @@
                 v-if="index === 1"
                 class="v-select__selection v-select__selection--comma color text-caption text-field-text "
             >
-                (+{{ selectedItems.length - 1 }} {{ $t('others') }})
+                (+{{ selectedItems.length - 1 }} others
             </span>
         </template>
     </v-select>
@@ -117,7 +109,7 @@ export default {
         validateRequired(val) {
             // val is null when items are cleared by clearable props in v-select
             if ((val === null || val.length === 0) && this.required) {
-                return `${this.$tc(this.entityName, this.multiple ? 2 : 1)} is required`
+                return `is required`
             }
             return true
         },

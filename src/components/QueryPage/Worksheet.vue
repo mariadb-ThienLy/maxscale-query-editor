@@ -157,7 +157,7 @@ export default {
             getDbCmplList: 'query/getDbCmplList',
         }),
         showVisChart() {
-            const datasets = this.$typeCheck(this.chartData, 'datasets').safeArray
+            const datasets = this.$helper.typeCheck(this.chartData, 'datasets').safeArray
             return this.selectedChart !== 'No Visualization' && datasets.length
         },
         containerChartHeight() {

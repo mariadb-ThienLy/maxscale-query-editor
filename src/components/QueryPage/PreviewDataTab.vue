@@ -7,7 +7,7 @@
                     <truncate-string
                         :maxWidth="260"
                         :nudgeLeft="16"
-                        :text="$typeCheck(getActiveTreeNode, 'id').safeObject"
+                        :text="$helper.typeCheck(getActiveTreeNode, 'id').safeObject"
                     />
                 </div>
                 <v-tabs
@@ -22,7 +22,7 @@
                         class="tab-btn px-3 text-uppercase"
                         active-class="tab-btn--active font-weight-medium"
                     >
-                        {{ $t('data') }}
+                        {{ 'data' }}
                     </v-tab>
                     <v-tab
                         :key="SQL_QUERY_MODES.PRVW_DATA_DETAILS"
@@ -30,7 +30,7 @@
                         class="tab-btn px-3 text-uppercase"
                         active-class="tab-btn--active font-weight-medium"
                     >
-                        {{ $t('details') }}
+                        {{ 'details' }}
                     </v-tab>
                 </v-tabs>
                 <v-spacer />
@@ -58,13 +58,13 @@
                             <v-icon size="16" color="error" class="mr-2">
                                 $vuetify.icons.alertWarning
                             </v-icon>
-                            {{ $t('incomplete') }}
+                            {{ 'incomplete' }}
                         </div>
                     </template>
-                    <span> {{ $t('info.queryIncomplete') }}</span>
+                    <span> {{ 'info.queryIncomplete' }}</span>
                 </v-tooltip>
             </template>
-            <span v-else v-html="$t('prvwTabGuide')" />
+            <span v-else v-html="'prvwTabGuide'" />
         </div>
         <template v-if="validConn">
             <v-skeleton-loader
@@ -84,13 +84,13 @@
                         :height="dynDim.height - headerHeight"
                         :width="dynDim.width"
                         :headers="
-                            $typeCheck(getPrvwDataRes(activeView), 'fields').safeArray.map(
-                                field => ({
+                            $helper
+                                .typeCheck(getPrvwDataRes(activeView), 'fields')
+                                .safeArray.map(field => ({
                                     text: field,
-                                })
-                            )
+                                }))
                         "
-                        :rows="$typeCheck(getPrvwDataRes(activeView), 'data').safeArray"
+                        :rows="$helper.typeCheck(getPrvwDataRes(activeView), 'data').safeArray"
                         showGroupBy
                     />
                 </keep-alive>
@@ -213,7 +213,7 @@ export default {
          */
         async fetchActiveNodeData(SQL_QUERY_MODE) {
             await this.fetchPrvw({
-                tblId: this.$typeCheck(this.getActiveTreeNode, 'id').safeObject,
+                tblId: this.$helper.typeCheck(this.getActiveTreeNode, 'id').safeObject,
                 prvwMode: SQL_QUERY_MODE,
             })
         },

@@ -5,7 +5,7 @@
         :onSave="onSave"
         :onCancel="onCancel"
         :onClose="onClose"
-        :title="`${$t('connectTo')}...`"
+        :title="`${'connectTo'}...`"
         :hasChanged="hasChanged"
         :lazyValidation="false"
         minBodyWidth="512px"
@@ -25,7 +25,7 @@
                 depressed
                 @click="cancel"
             >
-                {{ $t('cancel') }}
+                {{ 'cancel' }}
             </v-btn>
             <v-btn
                 small
@@ -37,7 +37,7 @@
                 :disabled="!isFormValid"
                 @click="save"
             >
-                {{ $t('connect') }}
+                {{ 'connect' }}
             </v-btn>
         </template>
         <template v-if="isOpened" v-slot:body>
@@ -55,7 +55,7 @@
                 dense
                 :height="36"
                 hide-details="auto"
-                :rules="[v => !!v || $t('errors.requiredInput', { inputName: 'This field' })]"
+                :rules="[v => !!v || 'This field errors.requiredInput']"
                 required
             >
                 <template v-slot:selection="{ item }">
@@ -76,11 +76,9 @@
                     <v-col v-if="selectedResourceType" cols="12" md="12" class="pa-1">
                         <label class="field__label color text-small-text label-required">
                             {{
-                                $t('resourceLabelName', {
-                                    resourceName: $helper.resourceTxtTransform(
-                                        selectedResourceType
-                                    ),
-                                })
+                                `resourceLabelName ${$helper.resourceTxtTransform(
+                                    selectedResourceType
+                                )}`
                             }}
                         </label>
                         <select-dropdown
@@ -97,7 +95,7 @@
 
                     <v-col cols="12" md="6" class="pa-1">
                         <label class="field__label color text-small-text label-required">
-                            {{ $t('username') }}
+                            {{ 'username' }}
                         </label>
                         <v-text-field
                             id="db-user"
@@ -116,7 +114,7 @@
 
                     <v-col cols="12" md="6" class="pa-1">
                         <label class="field__label color text-small-text label-required">
-                            {{ $t('password') }}
+                            {{ 'password' }}
                         </label>
                         <v-text-field
                             id="db-password"
@@ -139,7 +137,7 @@
                     </v-col>
                     <v-col cols="12" md="6" class="pa-1">
                         <label class="field__label color text-small-text">
-                            {{ $t('database') }}
+                            {{ 'database' }}
                         </label>
                         <v-text-field
                             v-model="body.db"
@@ -154,7 +152,7 @@
                     </v-col>
                     <v-col cols="12" md="6" class="pa-1">
                         <label class="field__label color text-small-text">
-                            {{ $t('timeout') }}
+                            {{ 'timeout' }}
                         </label>
                         <v-text-field
                             v-model.number="body.timeout"
@@ -212,10 +210,8 @@ export default {
                 timeout: 10,
             },
             rules: {
-                user: [val => !!val || this.$t('errors.requiredInput', { inputName: 'Username' })],
-                password: [
-                    val => !!val || this.$t('errors.requiredInput', { inputName: 'Password' }),
-                ],
+                user: [val => !!val || 'errors.requiredInput'],
+                password: [val => !!val || 'errors.requiredInput'],
             },
             isFormValid: false,
             resourceTypes: ['servers', 'services', 'listeners'],
@@ -268,8 +264,7 @@ export default {
                 if (this.resourceItems.length) {
                     this.defSelectedRsrc = this.resourceItems[0]
                     this.errRsrcMsg = ''
-                } else
-                    this.errRsrcMsg = this.$t('errors.existingRsrcConnection', { resourceType: v })
+                } else this.errRsrcMsg = 'errors.existingRsrcConnection'
             }
         },
         isOpened(v) {

@@ -33,12 +33,8 @@
             <span style="white-space: pre;" class="d-inline-block text-center">
                 {{
                     selected_query_txt
-                        ? `${$t('saveStatementsToFavorite', {
-                              quantity: $t('selected'),
-                          })}\nCmd/Ctrl + S`
-                        : `${$t('saveStatementsToFavorite', {
-                              quantity: $t('all'),
-                          })}\nCmd/Ctrl + S`
+                        ? 'saveStatementsToFavorite selected \nCmd/Ctrl + S'
+                        : 'saveStatementsToFavorite all \nCmd/Ctrl + S'
                 }}
             </span>
         </v-tooltip>
@@ -55,7 +51,7 @@
                     </v-icon>
                 </v-btn>
             </template>
-            <span class="text-capitalize"> {{ $tc('settings', 2) }}</span>
+            <span class="text-capitalize"> {{ 'settings' }}</span>
         </v-tooltip>
 
         <v-tooltip
@@ -70,13 +66,13 @@
                     </v-icon>
                 </v-btn>
             </template>
-            <span>{{ is_fullscreen ? $t('minimize') : $t('maximize') }}</span>
+            <span>{{ is_fullscreen ? 'minimize' : 'maximize' }}</span>
         </v-tooltip>
         <query-config-dialog v-model="queryConfigDialog" />
 
         <confirm-dialog
             ref="favoriteConfirmDialog"
-            :title="$t('confirmations.addToFavorite')"
+            :title="'confirmations.addToFavorite'"
             type="add"
             :onSave="addToFavorite"
             minBodyWidth="768px"
@@ -94,12 +90,12 @@
                     />
                 </div>
                 <label class="field__label color text-small-text label-required">
-                    {{ $t('name') }}
+                    {{ 'name' }}
                 </label>
                 <v-text-field
                     v-model="favorite.name"
                     type="text"
-                    :rules="[val => !!val || $t('errors.requiredInput', { inputName: $t('name') })]"
+                    :rules="[val => !!val || 'errors.requiredInput name']"
                     class="std error--text__bottom mb-2"
                     dense
                     :height="36"

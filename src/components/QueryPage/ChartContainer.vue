@@ -1,5 +1,8 @@
 <template>
-    <div v-if="!$typeCheck(chartData, 'datasets').isEmptyArray" class="chart-container fill-height">
+    <div
+        v-if="!$helper.typeCheck(chartData, 'datasets').isEmptyArray"
+        class="chart-container fill-height"
+    >
         <div ref="chartTool" class="d-flex pt-2 pr-3">
             <v-spacer />
             <v-tooltip
@@ -21,7 +24,7 @@
                         </v-icon>
                     </v-btn>
                 </template>
-                <span>{{ $t('exportChart') }}</span>
+                <span>{{ 'exportChart' }}</span>
             </v-tooltip>
             <v-tooltip
                 top
@@ -41,7 +44,7 @@
                         </v-icon>
                     </v-btn>
                 </template>
-                <span>{{ isChartMaximized ? $t('minimize') : $t('maximize') }}</span>
+                <span>{{ isChartMaximized ? 'minimize' : 'maximize' }}</span>
             </v-tooltip>
         </div>
 
@@ -138,7 +141,7 @@ export default {
         },
         minWidth() {
             if (this.autoSkipXTick) return 'unset'
-            if (this.$typeCheck(this.chartData, 'labels').isDefined)
+            if (this.$helper.typeCheck(this.chartData, 'labels').isDefined)
                 return `${Math.min(this.chartData.labels.length * 15, 15000)}px`
             return '0px'
         },
@@ -343,7 +346,7 @@ export default {
     },
     watch: {
         chartData(v) {
-            if (!this.$typeCheck(v, 'datasets[0].data[0]').safeObject) this.removeTooltip()
+            if (!this.$helper.typeCheck(v, 'datasets[0].data[0]').safeObject) this.removeTooltip()
         },
     },
     mounted() {

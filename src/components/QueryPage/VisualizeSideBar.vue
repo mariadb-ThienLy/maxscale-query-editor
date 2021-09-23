@@ -1,7 +1,7 @@
 <template>
     <div class="pa-4">
-        <h5 class="mb-4">{{ $t('visualization') }}</h5>
-        <label class="field__label color text-small-text"> {{ $t('graph') }}</label>
+        <h5 class="mb-4">{{ 'visualization' }}</h5>
+        <label class="field__label color text-small-text"> {{ 'graph' }}</label>
         <v-select
             v-model="selectedChart"
             :items="chartTypes"
@@ -16,8 +16,8 @@
             :height="36"
             hide-details="auto"
         />
-        <div v-if="selectedChart !== $t('noVisualization')" class="mt-4">
-            <label class="field__label color text-small-text"> {{ $t('selectResultSet') }}</label>
+        <div v-if="selectedChart !== 'noVisualization'" class="mt-4">
+            <label class="field__label color text-small-text"> {{ 'selectResultSet' }}</label>
             <v-select
                 v-model="resSet"
                 :items="resultSets"
@@ -38,10 +38,10 @@
             <template v-if="resSet">
                 <!-- Don't show axis inputs if result set is empty -->
                 <div
-                    v-if="$typeCheck(resSet, 'data').isEmptyArray"
+                    v-if="$helper.typeCheck(resSet, 'data').isEmptyArray"
                     class="mt-4 color text-small-text"
                 >
-                    {{ $t('emptySet') }}
+                    {{ 'emptySet' }}
                 </div>
                 <template v-for="a in ['x', 'y']" v-else>
                     <div :key="a" class="mt-2">
@@ -71,7 +71,7 @@
                     color="primary"
                     class="mt-2 show-trendline"
                     hide-details
-                    :label="$t('showTrendline')"
+                    :label="'showTrendline'"
                 />
             </template>
             <!-- TODO: add more graph configurations -->
@@ -98,9 +98,9 @@ export default {
 
     data() {
         return {
-            selectedChart: this.$t('noVisualization'),
+            selectedChart: 'noVisualization',
             chartTypes: [
-                this.$t('noVisualization'),
+                'noVisualization',
                 'Line',
                 'Scatter',
                 'Bar - Vertical',
@@ -128,7 +128,7 @@ export default {
             let resSets = []
 
             let resSetArr = this.cloneRes(
-                this.$typeCheck(this.getResults, 'attributes.results').safeArray
+                this.$helper.typeCheck(this.getResults, 'attributes.results').safeArray
             )
             let resSetCount = 0
             for (const res of resSetArr) {
@@ -140,20 +140,21 @@ export default {
             }
 
             let prvwData = this.cloneRes(
-                this.$typeCheck(this.getPrvwDataRes(this.SQL_QUERY_MODES.PRVW_DATA)).safeObject
+                this.$helper.typeCheck(this.getPrvwDataRes(this.SQL_QUERY_MODES.PRVW_DATA))
+                    .safeObject
             )
-            if (!this.$typeCheck(prvwData).isEmptyObject) {
-                prvwData.id = this.$t('previewData')
+            if (!this.$helper.typeCheck(prvwData).isEmptyObject) {
+                prvwData.id = 'previewData'
                 resSets.push(prvwData)
             }
 
             let prvwDataDetails = this.cloneRes(
-                this.$typeCheck(this.getPrvwDataRes(this.SQL_QUERY_MODES.PRVW_DATA_DETAILS))
+                this.$helper.typeCheck(this.getPrvwDataRes(this.SQL_QUERY_MODES.PRVW_DATA_DETAILS))
                     .safeObject
             )
 
-            if (!this.$typeCheck(prvwDataDetails).isEmptyObject) {
-                prvwDataDetails.id = this.$t('viewDetails')
+            if (!this.$helper.typeCheck(prvwDataDetails).isEmptyObject) {
+                prvwDataDetails.id = 'viewDetails'
                 resSets.push(prvwDataDetails)
             }
             return resSets
@@ -181,7 +182,7 @@ export default {
             return fields
         },
         xAxisFields() {
-            if (this.$typeCheck(this.resSet, 'fields').isEmptyArray) return []
+            if (this.$helper.typeCheck(this.resSet, 'fields').isEmptyArray) return []
             switch (this.selectedChart) {
                 case 'Bar - Horizontal':
                     return this.numericFields
@@ -194,7 +195,7 @@ export default {
             }
         },
         yAxisFields() {
-            if (this.$typeCheck(this.resSet, 'fields').isEmptyArray) return []
+            if (this.$helper.typeCheck(this.resSet, 'fields').isEmptyArray) return []
             switch (this.selectedChart) {
                 case 'Line':
                 case 'Scatter':

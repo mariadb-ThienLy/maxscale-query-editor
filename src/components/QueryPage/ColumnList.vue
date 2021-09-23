@@ -35,7 +35,7 @@
                     outlined
                     height="36"
                     class="std column-list__search"
-                    :placeholder="$t('search')"
+                    :placeholder="'search'"
                     hide-details
                 />
             </v-list-item>
@@ -47,7 +47,7 @@
                     color="primary"
                     class="pa-0 ma-0 checkbox d-flex align-center"
                     hide-details
-                    :label="$t('selectAll')"
+                    :label="'selectAll'"
                     :input-value="isAllHeaderChecked"
                     @change="toggleAllHeaders"
                 />

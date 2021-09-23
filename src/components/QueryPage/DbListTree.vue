@@ -100,7 +100,7 @@
  * Public License.
  */
 import { mapGetters, mapMutations, mapState } from 'vuex'
-import customDragEvt from 'mixins/customDragEvt'
+import customDragEvt from '@/mixins/customDragEvt'
 export default {
     name: 'db-list-tree',
     mixins: [customDragEvt],
@@ -110,15 +110,11 @@ export default {
              *  TODO: Refactor and dry ctx menu. A menu option named `Insert to editor`
              *  has sub-menu `insertSchemaToEditor` and `insertNameToEditor`
              */
-            tableOptions: [
-                this.$t('previewData'),
-                this.$t('viewDetails'),
-                this.$t('placeSchemaInEditor'),
-            ],
-            schemaOptions: [this.$t('useDb'), this.$t('placeSchemaInEditor')],
-            columnOptions: [this.$t('placeColumnNameInEditor')],
-            spOptions: [this.$t('placeSchemaInEditor')],
-            triggerOptions: [this.$t('placeSchemaInEditor')],
+            tableOptions: ['previewData', 'viewDetails', 'placeSchemaInEditor'],
+            schemaOptions: ['useDb', 'placeSchemaInEditor'],
+            columnOptions: ['placeColumnNameInEditor'],
+            spOptions: ['placeSchemaInEditor'],
+            triggerOptions: ['placeSchemaInEditor'],
             showCtxMenu: false,
             activeCtxItem: null, // active item to show in context(options) menu
             hoveredItem: null,
@@ -237,21 +233,21 @@ export default {
         optionHandler({ item, option }) {
             const schema = item.id
             switch (option) {
-                case this.$t('previewData'):
+                case 'previewData':
                     this.$emit('preview-data', schema)
                     this.updateActiveNode(item)
                     break
-                case this.$t('viewDetails'):
+                case 'viewDetails':
                     this.$emit('view-details', schema)
                     this.updateActiveNode(item)
                     break
-                case this.$t('placeSchemaInEditor'):
+                case 'placeSchemaInEditor':
                     this.$emit('place-to-editor', this.$helper.escapeIdentifiers(schema))
                     break
-                case this.$t('placeColumnNameInEditor'):
+                case 'placeColumnNameInEditor':
                     this.$emit('place-to-editor', this.$helper.escapeIdentifiers(item.name))
                     break
-                case this.$t('useDb'):
+                case 'useDb':
                     this.$emit('use-db', schema)
                     break
             }

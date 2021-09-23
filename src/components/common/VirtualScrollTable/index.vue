@@ -140,7 +140,7 @@
             :style="{ lineHeight, height: `${height - itemHeight}px` }"
         >
             <div class="td px-3 d-flex justify-center flex-grow-1">
-                {{ $t('$vuetify.noDataText') }}
+                {{ '$vuetify.noDataText' }}
             </div>
         </div>
         <div v-if="isResizing" class="resizing-mask" />
@@ -309,7 +309,7 @@ export default {
         },
 
         cellMaxWidth(i) {
-            return this.$typeCheck(this.headerWidthMap[i]).safeNumber - 24
+            return this.$helper.typeCheck(this.headerWidthMap[i]).safeNumber - 24
         },
 
         /**
@@ -384,7 +384,7 @@ export default {
          * @returns {Boolean} - return whether this is a group row or not
          */
         isRowGroup(row) {
-            return this.$typeCheck(row).isObject
+            return this.$helper.typeCheck(row).isObject
         },
 
         /**

@@ -13,7 +13,7 @@
                 <v-row class="my-0 mx-n1">
                     <v-col cols="12" class="pa-1">
                         <label class="field__label color text-small-text label-required">
-                            {{ $t('maxRows') }}
+                            {{ 'maxRows' }}
                         </label>
                         <v-text-field
                             v-model.number="config.maxRows"
@@ -30,11 +30,11 @@
                         <v-icon size="16" color="warning" class="mr-2">
                             $vuetify.icons.alertWarning
                         </v-icon>
-                        <small v-html="$t('info.maxRows')" />
+                        <small v-html="'info.maxRows'" />
                     </v-col>
                     <v-col cols="12" class="pa-1">
                         <label class="field__label color text-small-text label-required">
-                            {{ $t('queryHistoryRetentionPeriod') }} ({{ $t('inDays') }})
+                            {{ 'queryHistoryRetentionPeriod' }} ({{ 'inDays' }})
                         </label>
                         <v-text-field
                             v-model.number="config.queryHistoryRetentionPeriod"
@@ -54,9 +54,7 @@
                         <v-switch
                             v-model="config.showQueryConfirm"
                             :label="
-                                $t('info.queryShowConfirm', {
-                                    action: config.showQueryConfirm ? $t('show') : $t('hide'),
-                                })
+                                `info.queryShowConfirm ${config.showQueryConfirm ? 'show' : 'hide'}`
                             "
                             hide-details="auto"
                             class="show-confirm-switch mt-0 pa-0"
@@ -91,12 +89,12 @@ export default {
     data() {
         return {
             rules: {
-                maxRows: [v => this.validatePositiveNumber({ v, inputName: this.$t('maxRows') })],
+                maxRows: [v => this.validatePositiveNumber({ v, inputName: 'maxRows' })],
                 queryHistoryRetentionPeriod: [
                     v =>
                         this.validatePositiveNumber({
                             v,
-                            inputName: this.$t('queryHistoryRetentionPeriod'),
+                            inputName: 'queryHistoryRetentionPeriod',
                         }),
                 ],
             },
@@ -143,9 +141,8 @@ export default {
             SET_QUERY_HISTORY_EXPIRED_TIME: 'persisted/SET_QUERY_HISTORY_EXPIRED_TIME',
         }),
         validatePositiveNumber({ v, inputName }) {
-            if (this.$typeCheck(v).isEmptyString)
-                return this.$t('errors.requiredInput', { inputName })
-            if (v <= 0) return this.$t('errors.largerThanZero', { inputName })
+            if (this.$helper.typeCheck(v).isEmptyString) return `errors.requiredInput ${inputName}`
+            if (v <= 0) return 'errors.largerThanZero'
             if (v > 0) return true
         },
         handleSetDefConfig() {

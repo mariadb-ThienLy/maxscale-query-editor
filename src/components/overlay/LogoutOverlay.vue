@@ -2,12 +2,12 @@
     <v-overlay z-index="9999" :opacity="1">
         <div class="overlay">
             <div class="overlay-content">
-                <loading-message :text="$t('welcomeTo')" />
+                <loading-message :text="'welcomeTo'" />
                 <div class="loading-icon">
                     <img src="@/assets/icon-globe.svg" alt="MariaDB" />
                 </div>
                 <div class="color text-accent text-center">
-                    {{ $t('loggingOut') }}
+                    {{ 'loggingOut' }}
                 </div>
             </div>
         </div>

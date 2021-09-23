@@ -22,7 +22,7 @@
                 $vuetify.icons.database
             </v-icon>
             <div class="d-inline-block text-truncate" :style="{ maxWidth: `122px` }">
-                {{ active_db ? active_db : $t('useDb') }}
+                {{ active_db ? active_db : 'useDb' }}
             </div>
         </v-btn>
         <v-menu
@@ -54,7 +54,7 @@
             content-class="shadow-drop color text-navigation py-1 px-4"
             activator="#active-db"
         >
-            <span>{{ $t('useDb') }}: {{ active_db }} </span>
+            <span>{{ 'useDb' }}: {{ active_db }} </span>
         </v-tooltip>
 
         <v-spacer></v-spacer>
@@ -83,16 +83,14 @@
                     <v-icon size="16" class="mr-2">
                         $vuetify.icons.running
                     </v-icon>
-                    {{ $t('run') }}
+                    {{ 'run' }}
                 </v-btn>
             </template>
             <span style="white-space: pre;" class="d-inline-block text-center">
                 {{
                     selected_query_txt
-                        ? `${$t('runStatements', { quantity: $t('selected') })}\nCmd/Ctrl + Enter`
-                        : `${$t('runStatements', {
-                              quantity: $t('all'),
-                          })}\nCmd/Ctrl + Shift + Enter`
+                        ? 'runStatements selected \nCmd/Ctrl + Enter'
+                        : 'runStatements all \nCmd/Ctrl + Shift Enter'
                 }}
             </span>
         </v-tooltip>
@@ -128,13 +126,13 @@
                 </v-btn>
             </template>
             <span class="text-capitalize">
-                {{ $t('visualizedConfig', { action: show_vis_sidebar ? $t('hide') : $t('show') }) }}
+                {{ `visualizedConfig ${show_vis_sidebar ? 'hide' : 'show'}` }}
             </span>
         </v-tooltip>
         <confirm-dialog
             v-if="query_confirm_flag"
             ref="runConfirmDialog"
-            :title="$t('confirmations.runQuery')"
+            :title="'confirmations.runQuery'"
             type="run"
             :onSave="confirmRunning"
             minBodyWidth="768px"
@@ -157,7 +155,7 @@
                 <v-checkbox
                     v-model="dontShowConfirm"
                     class="pa-0 ma-0"
-                    :label="$t('dontAskMeAgain')"
+                    :label="'dontAskMeAgain'"
                     color="primary"
                     hide-details
                 />

@@ -8,7 +8,7 @@
                     class="tab-btn px-3 text-uppercase"
                     active-class="tab-btn--active font-weight-medium"
                 >
-                    {{ $t('history') }}
+                    {{ 'history' }}
                 </v-tab>
                 <v-tab
                     :key="SQL_QUERY_MODES.FAVORITE"
@@ -16,7 +16,7 @@
                     class="tab-btn px-3 text-uppercase"
                     active-class="tab-btn--active font-weight-medium"
                 >
-                    {{ $t('favorite') }}
+                    {{ 'favorite' }}
                 </v-tab>
             </v-tabs>
         </div>
@@ -57,20 +57,16 @@
             <span
                 v-else
                 v-html="
-                    activeView === SQL_QUERY_MODES.HISTORY
-                        ? $t('historyTabGuide')
-                        : $t('favoriteTabGuide')
+                    activeView === SQL_QUERY_MODES.HISTORY ? 'historyTabGuide' : 'favoriteTabGuide'
                 "
             />
         </keep-alive>
         <confirm-dialog
             ref="confirmDelDialog"
             :title="
-                $t('clearSelectedQueries', {
-                    targetType: $t(
-                        activeView === SQL_QUERY_MODES.HISTORY ? 'queryHistory' : 'favoriteQueries'
-                    ),
-                })
+                `clearSelectedQueries ${
+                    activeView === SQL_QUERY_MODES.HISTORY ? 'queryHistory' : 'favoriteQueries'
+                }`
             "
             type="delete"
             :onSave="deleteSelectedRows"
@@ -79,17 +75,13 @@
             <template v-slot:body-prepend>
                 <p>
                     {{
-                        $t('info.clearSelectedQueries', {
-                            quantity:
-                                itemsToBeDeleted.length === rows.length
-                                    ? $t('entire')
-                                    : $t('selected'),
-                            targetType: $t(
-                                activeView === SQL_QUERY_MODES.HISTORY
-                                    ? 'queryHistory'
-                                    : 'favoriteQueries'
-                            ),
-                        })
+                        `info.clearSelectedQueries ${
+                            itemsToBeDeleted.length === rows.length ? 'entire' : 'selected'
+                        } ${
+                            activeView === SQL_QUERY_MODES.HISTORY
+                                ? 'queryHistory'
+                                : 'favoriteQueries'
+                        }`
                     }}
                 </p>
             </template>
@@ -149,7 +141,7 @@ export default {
             showCtxMenu: false,
             activeCtxItem: null,
             ctxClientPos: { x: 0, y: 0 },
-            ctxOptions: [this.$t('copySqlToClipboard'), this.$t('placeSqlInEditor')],
+            ctxOptions: ['copySqlToClipboard', 'placeSqlInEditor'],
         }
     },
     computed: {
@@ -180,7 +172,7 @@ export default {
                 case this.SQL_QUERY_MODES.FAVORITE:
                     data = this.query_favorite
             }
-            return Object.keys(this.$typeCheck(data[0]).safeObjectOrEmpty).map(field => {
+            return Object.keys(this.$helper.typeCheck(data[0]).safeObjectOrEmpty).map(field => {
                 let header = {
                     text: field,
                 }
@@ -296,11 +288,11 @@ export default {
             })
             const sql = data[0].sql
             switch (opt) {
-                case this.$t('copySqlToClipboard'): {
+                case 'copySqlToClipboard': {
                     this.$helper.copyTextToClipboard(sql)
                     break
                 }
-                case this.$t('placeSqlInEditor'):
+                case 'placeSqlInEditor':
                     //TODO: add handler for this event on the parent component
                     this.$emit('place-sql-in-editor', sql)
                     break

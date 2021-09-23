@@ -6,7 +6,7 @@
                 color="primary"
                 :href="`#${SQL_QUERY_MODES.QUERY_VIEW}`"
             >
-                <span> {{ $t('results') }} </span>
+                <span> {{ 'results' }} </span>
             </v-tab>
             <v-tab
                 :disabled="
@@ -17,10 +17,10 @@
                 color="primary"
                 :href="`#${SQL_QUERY_MODES.PRVW_DATA}`"
             >
-                <span>{{ $t('dataPrvw') }} </span>
+                <span>{{ 'dataPrvw' }} </span>
             </v-tab>
             <v-tab color="primary" :href="`#${SQL_QUERY_MODES.HISTORY}`">
-                <span>{{ $t('historyAndFavorite') }} </span>
+                <span>{{ 'historyAndFavorite' }} </span>
             </v-tab>
         </v-tabs>
         <v-slide-x-transition>

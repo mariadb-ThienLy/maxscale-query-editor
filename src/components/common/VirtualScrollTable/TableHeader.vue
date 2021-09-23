@@ -53,7 +53,7 @@
                         <truncate-string
                             v-else
                             :text="`${header.text}`.toUpperCase()"
-                            :maxWidth="$typeCheck(headerWidthMap[i]).safeNumber - 46"
+                            :maxWidth="$helper.typeCheck(headerWidthMap[i]).safeNumber - 46"
                         />
                         <span v-if="header.text === '#'" class="ml-1 color text-field-text">
                             ({{ rowsLength }})
@@ -62,7 +62,9 @@
                             $vuetify.icons.arrowDown
                         </v-icon>
                         <span
-                            v-if="enableGrouping && $typeCheck(header, 'groupable').safeBoolean"
+                            v-if="
+                                enableGrouping && $helper.typeCheck(header, 'groupable').safeBoolean
+                            "
                             class="ml-2 text-none"
                             :class="[
                                 activeGroupBy === header.text && !isVertTable
@@ -71,7 +73,7 @@
                             ]"
                             @click.stop="() => handleToggleGroup(header.text)"
                         >
-                            {{ $t('group') }}
+                            {{ 'group' }}
                         </span>
                         <div
                             v-if="i !== tableHeaders.length - 1"
@@ -187,7 +189,7 @@ export default {
     methods: {
         //threshold, user cannot resize header smaller than this
         getMinHeaderWidth(header) {
-            return this.$typeCheck(header, 'groupable').safeBoolean ? 117 : 67
+            return this.$helper.typeCheck(header, 'groupable').safeBoolean ? 117 : 67
         },
         resetHeaderWidth() {
             let headerWidthMap = {}
@@ -204,7 +206,7 @@ export default {
                 let headerWidthMap = {}
                 // get width of each header then use it to set same width of corresponding cells
                 for (const [i, header] of this.tableHeaders.entries()) {
-                    if (this.$typeCheck(this.$refs, `header__${i}`).safeArray.length) {
+                    if (this.$helper.typeCheck(this.$refs, `header__${i}`).safeArray.length) {
                         let headerWidth = this.$refs[`header__${i}`][0].clientWidth
                         const minHeaderWidth = this.getMinHeaderWidth(header)
                         if (headerWidth < minHeaderWidth) headerWidth = minHeaderWidth
