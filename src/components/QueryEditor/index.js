@@ -76,7 +76,7 @@ export default {
         },
     },
     beforeCreate() {
-        const monaco = require('monaco-editor') /*  /esm/vs/editor/editor.api.js */
+        const monaco = require('monaco-editor')
         this.monaco = monaco
     },
     mounted() {

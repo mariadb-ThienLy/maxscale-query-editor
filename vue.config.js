@@ -39,16 +39,6 @@ module.exports = {
         })
 
         config.resolve.modules.add(path.resolve('./src'), path.resolve('./node_modules'))
-
-        /*
-            To strip all locales except “en”, and ...
-            (“en” is built into Moment and can’t be removed)
-        */
-        config.plugin('MomentLocalesPlugin').use(require('moment-locales-webpack-plugin'), [
-            {
-                localesToKeep: [], //e.g. 'ru', 'vi'
-            },
-        ])
         config.plugin('MonacoWebpackPlugin').use(require('monaco-editor-webpack-plugin'), [
             {
                 languages: ['mariadb'],
@@ -109,10 +99,6 @@ module.exports = {
                 ],
             },
         ])
-        config.externals = {
-            moment: 'moment',
-            vuetify: 'vuetify/lib',
-        }
     },
 
     transpileDependencies: ['vuetify'],
