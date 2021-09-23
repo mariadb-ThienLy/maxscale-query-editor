@@ -88,10 +88,9 @@ if (!argv.format || argv.format === 'es') {
         input: 'src/maxscale-query-editor.esm.js',
         external,
         output: {
-            format: 'esm',
-            dir: 'dist',
+            file: 'dist/maxscale-query-editor.esm.js',
+            format: 'es',
             exports: 'named',
-            inlineDynamicImports: true,
         },
         plugins: [
             replace({ preventAssignment: true, ...baseConfig.plugins.replace }),
