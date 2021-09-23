@@ -83,14 +83,14 @@ export default {
         this.initMonaco(this.monaco)
     },
     beforeDestroy() {
-        this.completionProvider.dispose()
+        this.handleDisposeCompletionProvider()
         if (this.editor) this.editor.dispose()
     },
     activated() {
-        if (this.isKeptAlive) this.regCompleters(this.monaco)
+        if (this.isKeptAlive && !this.readOnly) this.regCompleters(this.monaco)
     },
     deactivated() {
-        if (this.isKeptAlive) this.completionProvider.dispose()
+        if (this.isKeptAlive && !this.readOnly) this.handleDisposeCompletionProvider()
     },
     methods: {
         codeFormatter(v) {
@@ -256,6 +256,9 @@ export default {
                     ...item,
                 })
             }
+        },
+        handleDisposeCompletionProvider() {
+            if (this.completionProvider) this.completionProvider.dispose()
         },
         getEditorValue() {
             return this.editor.getValue()

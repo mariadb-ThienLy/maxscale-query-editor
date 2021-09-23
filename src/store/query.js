@@ -12,7 +12,7 @@
  */
 import { uniqBy, uniqueId, pickBy } from '@/utils/helpers'
 import queryHelper from './queryHelper'
-import axios from '@/plugins/axios'
+
 /**
  * @returns Initial connection related states
  */
@@ -297,7 +297,7 @@ export default {
     actions: {
         async fetchRcTargetNames({ state, commit }, resourceType) {
             try {
-                let res = await axios.get(`/${resourceType}?fields[${resourceType}]=id`)
+                let res = await this.$http.get(`/${resourceType}?fields[${resourceType}]=id`)
                 if (res.data.data) {
                     const names = res.data.data.map(({ id, type }) => ({ id, type }))
                     commit('SET_RC_TARGET_NAMES_MAP', {
@@ -313,7 +313,7 @@ export default {
         async openConnect({ state, dispatch, commit }, { body, resourceType }) {
             const active_wke_id = state.active_wke_id
             try {
-                let res = await axios.post(`/sql?persist=yes`, body)
+                let res = await this.$http.post(`/sql?persist=yes`, body)
                 if (res.status === 201) {
                     commit(
                         'SET_SNACK_BAR_MESSAGE',
@@ -343,7 +343,7 @@ export default {
         async disconnect({ state, commit, dispatch }, { showSnackbar, id: cnctId }) {
             try {
                 const targetCnctResource = state.cnct_resources.find(rsrc => rsrc.id === cnctId)
-                let res = await axios.delete(`/sql/${cnctId}`)
+                let res = await this.$http.delete(`/sql/${cnctId}`)
                 if (res.status === 204) {
                     if (showSnackbar)
                         commit(
@@ -389,7 +389,7 @@ export default {
         async validatingConn({ state, commit, dispatch }) {
             try {
                 commit('SET_IS_VALIDATING_CONN', true)
-                const res = await axios.get(`/sql/`)
+                const res = await this.$http.get(`/sql/`)
                 const resConnIds = res.data.data.map(conn => conn.id)
                 const clientConnIds = queryHelper.getClientConnIds()
                 if (resConnIds.length === 0) {
@@ -502,7 +502,7 @@ export default {
         async getDbs({ state, commit }) {
             const curr_cnct_resource = state.curr_cnct_resource
             try {
-                const res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                const res = await this.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: 'SELECT * FROM information_schema.SCHEMATA;',
                 })
                 let cmpList = []
@@ -596,7 +596,7 @@ export default {
                         break
                 }
                 // eslint-disable-next-line vue/max-len
-                const res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                const res = await this.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: query,
                 })
                 const dataRows = this.vue.$helper.getObjectRows({
@@ -680,7 +680,7 @@ export default {
                         query = `SELECT COLUMN_NAME, COLUMN_TYPE, COLUMN_KEY, PRIVILEGES FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = "${dbName}" AND TABLE_NAME = "${tblName}";`
                         break
                 }
-                const res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                const res = await this.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: query,
                 })
 
@@ -860,7 +860,7 @@ export default {
                             break
                     }
 
-                    let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                    let res = await this.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
                         sql,
                         max_rows: rootState.persisted.query_max_rows,
                     })
@@ -915,7 +915,7 @@ export default {
                         },
                     })
 
-                    let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                    let res = await this.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
                         sql: query,
                         max_rows: rootState.persisted.query_max_rows,
                     })
@@ -955,7 +955,7 @@ export default {
             const curr_cnct_resource = state.curr_cnct_resource
             const active_wke_id = state.active_wke_id
             try {
-                let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                let res = await this.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: `USE ${this.vue.$helper.escapeIdentifiers(db)};`,
                 })
                 if (res.data.data.attributes.results[0].errno) {
@@ -979,7 +979,7 @@ export default {
             const active_db = state.active_db
             const active_wke_id = state.active_wke_id
             try {
-                let res = await axios.post(`/sql/${curr_cnct_resource.id}/queries`, {
+                let res = await this.$http.post(`/sql/${curr_cnct_resource.id}/queries`, {
                     sql: 'SELECT DATABASE()',
                 })
                 const resActiveDb = res.data.data.attributes.results[0].data.flat()[0]

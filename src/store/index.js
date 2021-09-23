@@ -16,8 +16,10 @@ import query, { defWorksheetState } from './query'
 import persisted from './persisted'
 import { APP_CONFIG } from '@/utils/constants'
 import createPersistedState from 'vuex-persistedstate'
+import axios from '@/utils/axios'
 const plugins = store => {
     store.vue = Vue.prototype
+    store.$http = axios(store)
 }
 
 const store = new Vuex.Store({
